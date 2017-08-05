@@ -49,42 +49,46 @@ public class TicketResource {
      */
     @PostMapping("/tickets")
     @Timed
-    public ResponseEntity<TicketDTO> createTicket(@Valid @RequestBody TicketDTO ticketDTO) throws URISyntaxException {
+    public ResponseEntity<Void> createTicket(@Valid @RequestBody TicketDTO ticketDTO) throws URISyntaxException {
         log.debug("REST request to save Ticket : {}", ticketDTO);
         if (ticketDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new ticket cannot already have an ID")).body(null);
         }
+        if (ticketRepository.findByTicketId(ticketDTO.getTicketId()) != null) {
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A  ticket with ticket ID already exists")).body(null);
+        }
+        ticketDTO.setValid(true);
         Ticket ticket = ticketMapper.toEntity(ticketDTO);
         ticket = ticketRepository.save(ticket);
         TicketDTO result = ticketMapper.toDto(ticket);
         return ResponseEntity.created(new URI("/api/tickets/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+            .build();
     }
 
-    /**
-     * PUT  /tickets : Updates an existing ticket.
-     *
-     * @param ticketDTO the ticketDTO to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated ticketDTO,
-     * or with status 400 (Bad Request) if the ticketDTO is not valid,
-     * or with status 500 (Internal Server Error) if the ticketDTO couldn't be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
-     */
-    @PutMapping("/tickets")
-    @Timed
-    public ResponseEntity<TicketDTO> updateTicket(@Valid @RequestBody TicketDTO ticketDTO) throws URISyntaxException {
-        log.debug("REST request to update Ticket : {}", ticketDTO);
-        if (ticketDTO.getId() == null) {
-            return createTicket(ticketDTO);
-        }
-        Ticket ticket = ticketMapper.toEntity(ticketDTO);
-        ticket = ticketRepository.save(ticket);
-        TicketDTO result = ticketMapper.toDto(ticket);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, ticketDTO.getId().toString()))
-            .body(result);
-    }
+//    /**
+//     * PUT  /tickets : Updates an existing ticket.
+//     *
+//     * @param ticketDTO the ticketDTO to update
+//     * @return the ResponseEntity with status 200 (OK) and with body the updated ticketDTO,
+//     * or with status 400 (Bad Request) if the ticketDTO is not valid,
+//     * or with status 500 (Internal Server Error) if the ticketDTO couldn't be updated
+//     * @throws URISyntaxException if the Location URI syntax is incorrect
+//     */
+//    @PutMapping("/tickets")
+//    @Timed
+//    public ResponseEntity<TicketDTO> updateTicket(@Valid @RequestBody TicketDTO ticketDTO) throws URISyntaxException {
+//        log.debug("REST request to update Ticket : {}", ticketDTO);
+//        if (ticketDTO.getId() == null) {
+//            return createTicket(ticketDTO);
+//        }
+//        Ticket ticket = ticketMapper.toEntity(ticketDTO);
+//        ticket = ticketRepository.save(ticket);
+//        TicketDTO result = ticketMapper.toDto(ticket);
+//        return ResponseEntity.ok()
+//            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, ticketDTO.getId().toString()))
+//            .body(result);
+//    }
 
     /**
      * GET  /tickets : get all the tickets.

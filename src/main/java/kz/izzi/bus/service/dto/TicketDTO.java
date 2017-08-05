@@ -19,7 +19,7 @@ public class TicketDTO implements Serializable {
     private Boolean valid;
 
     @NotNull
-    private String ticket_id;
+    private String ticketId;
 
     public Long getId() {
         return id;
@@ -45,12 +45,12 @@ public class TicketDTO implements Serializable {
         this.valid = valid;
     }
 
-    public String getTicket_id() {
-        return ticket_id;
+    public String getTicketId() {
+        return ticketId;
     }
 
-    public void setTicket_id(String ticket_id) {
-        this.ticket_id = ticket_id;
+    public void setTicketId(String ticketId) {
+        this.ticketId = ticketId;
     }
 
     @Override
@@ -80,7 +80,7 @@ public class TicketDTO implements Serializable {
             "id=" + getId() +
             ", phoneNumber='" + getPhoneNumber() + "'" +
             ", valid='" + isValid() + "'" +
-            ", ticket_id='" + getTicket_id() + "'" +
+            ", ticketId='" + getTicketId() + "'" +
             "}";
     }
 }

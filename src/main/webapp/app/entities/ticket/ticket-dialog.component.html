@@ -38,11 +38,11 @@
         </div>
         <div class="form-group">
             <label class="form-control-label" for="field_ticket_id">Ticket Id</label>
-            <input type="text" class="form-control" name="ticket_id" id="field_ticket_id"
-                [(ngModel)]="ticket.ticket_id" required />
-            <div [hidden]="!(editForm.controls.ticket_id?.dirty && editForm.controls.ticket_id?.invalid)">
+            <input type="text" class="form-control" name="ticketId" id="field_ticket_id"
+                [(ngModel)]="ticket.ticketId" required />
+            <div [hidden]="!(editForm.controls.ticketId?.dirty && editForm.controls.ticketId?.invalid)">
                 <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.ticket_id?.errors?.required">
+                   [hidden]="!editForm.controls.ticketId?.errors?.required">
                    This field is required.
                 </small>
             </div>
