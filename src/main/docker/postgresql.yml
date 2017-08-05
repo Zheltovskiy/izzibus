@@ -1,0 +1,11 @@
+version: '2'
+services:
+    izzibus-postgresql:
+        image: postgres:9.6.2
+        # volumes:
+        #     - ~/volumes/jhipster/izzibus/postgresql/:/var/lib/postgresql/data/
+        environment:
+            - POSTGRES_USER=izzibus
+            - POSTGRES_PASSWORD=
+        ports:
+            - 5432:5432
