@@ -40,7 +40,7 @@ public class LotteryRoundScheduler {
     }
 
 
-    @Scheduled(cron = "0 0/2 * * * *")
+    @Scheduled(cron = "0 0/15 * * * *")
     public void checkTime() {
         LocalTime time = LocalTime.now();
         if (time.isAfter(START_TIME) && time.isBefore(END_TIME)) {
