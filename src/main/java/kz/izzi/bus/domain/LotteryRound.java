@@ -30,7 +30,7 @@ public class LotteryRound implements Serializable {
     private Ticket winner;
 
     @Column(columnDefinition="varchar2(20) DEFAULT \"Сладкий приз\"")
-    private String prize;
+    private String prize = "Сладкий приз";
 
     public Long getId() {
         return id;

@@ -4,6 +4,9 @@ import kz.izzi.bus.domain.LotteryRound;
 import kz.izzi.bus.domain.Ticket;
 import kz.izzi.bus.repository.LotteryRoundRepository;
 import kz.izzi.bus.repository.TicketRepository;
+import kz.izzi.bus.service.dto.sms.SmsRequest;
+import kz.izzi.bus.service.dto.sms.SmsResponse;
+import kz.izzi.bus.service.util.SmsTextFormer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -28,14 +31,16 @@ public class LotteryRoundScheduler {
 
     private final TicketRepository ticketRepository;
     private final LotteryRoundRepository lotteryRoundRepository;
+    private final SmsService smsService;
 
-    public LotteryRoundScheduler(TicketRepository ticketRepository, LotteryRoundRepository lotteryRoundRepository) {
+    public LotteryRoundScheduler(TicketRepository ticketRepository, LotteryRoundRepository lotteryRoundRepository, SmsService smsService) {
         this.ticketRepository = ticketRepository;
         this.lotteryRoundRepository = lotteryRoundRepository;
+        this.smsService = smsService;
     }
 
 
-    @Scheduled(cron = "0 0 * * * *")
+    @Scheduled(cron = "0 0/2 * * * *")
     public void checkTime() {
         LocalTime time = LocalTime.now();
         if (time.isAfter(START_TIME) && time.isBefore(END_TIME)) {
@@ -49,7 +54,7 @@ public class LotteryRoundScheduler {
             log.info("No tickets were registered for this round");
             return;
         }
-        int winId = new Random().nextInt(validTickets.size() + 1);
+        int winId = new Random().nextInt(validTickets.size());
         Ticket winner = validTickets.get(winId);
         log.info("Winning ticket {}", winner);
         winner.setValid(false);
@@ -59,6 +64,12 @@ public class LotteryRoundScheduler {
         round.setWinner(winner);
         LotteryRound saved = lotteryRoundRepository.save(round);
         log.info("Round {} saved", saved);
+        SmsResponse smsResponse =  smsService.sendMessage(new SmsRequest(winner.getPhoneNumber(), SmsTextFormer.getWinningText()));
+        if (smsResponse.isError()) {
+            log.error("Ошибка при отправке СМС сообщения победителю {}", winner);
+        }
+
+
     }
 
 
