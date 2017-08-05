@@ -29,6 +29,9 @@ public class LotteryRound implements Serializable {
     @JoinColumn(unique = true)
     private Ticket winner;
 
+    @Column(columnDefinition="varchar2(20) DEFAULT \"Сладкий приз\"")
+    private String prize;
+
     public Long getId() {
         return id;
     }
@@ -89,5 +92,13 @@ public class LotteryRound implements Serializable {
             "id=" + getId() +
             ", datetime='" + getDatetime() + "'" +
             "}";
+    }
+
+    public String getPrize() {
+        return prize;
+    }
+
+    public void setPrize(String prize) {
+        this.prize = prize;
     }
 }

@@ -9,5 +9,8 @@
     <include file="classpath:config/liquibase/changelog/20170805072756_added_entity_LotteryRound.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="classpath:config/liquibase/changelog/20170805072756_added_entity_constraints_LotteryRound.xml" relativeToChangelogFile="false"/>
+
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+    <include file="classpath:config/liquibase/changelog/20170805090037_add_prize_to_LotteryRound.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170805090038_add_uniqueness_to_Ticket_ticketId.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>

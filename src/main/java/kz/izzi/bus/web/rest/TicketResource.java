@@ -11,6 +11,7 @@ import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -97,6 +98,7 @@ public class TicketResource {
      */
     @GetMapping("/tickets")
     @Timed
+    @Secured("ROLE_USER")
     public List<TicketDTO> getAllTickets() {
         log.debug("REST request to get all Tickets");
         List<Ticket> tickets = ticketRepository.findAll();
@@ -111,6 +113,7 @@ public class TicketResource {
      */
     @GetMapping("/tickets/{id}")
     @Timed
+    @Secured("ROLE_USER")
     public ResponseEntity<TicketDTO> getTicket(@PathVariable Long id) {
         log.debug("REST request to get Ticket : {}", id);
         Ticket ticket = ticketRepository.findOne(id);
@@ -126,6 +129,7 @@ public class TicketResource {
      */
     @DeleteMapping("/tickets/{id}")
     @Timed
+    @Secured("ROLE_USER")
     public ResponseEntity<Void> deleteTicket(@PathVariable Long id) {
         log.debug("REST request to delete Ticket : {}", id);
         ticketRepository.delete(id);

@@ -9,6 +9,7 @@ import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -44,6 +45,7 @@ public class LotteryRoundResource {
      */
     @PostMapping("/lottery-rounds")
     @Timed
+    @Secured("ROLE_USER")
     public ResponseEntity<LotteryRound> createLotteryRound(@Valid @RequestBody LotteryRound lotteryRound) throws URISyntaxException {
         log.debug("REST request to save LotteryRound : {}", lotteryRound);
         if (lotteryRound.getId() != null) {
@@ -66,6 +68,7 @@ public class LotteryRoundResource {
      */
     @PutMapping("/lottery-rounds")
     @Timed
+    @Secured("ROLE_USER")
     public ResponseEntity<LotteryRound> updateLotteryRound(@Valid @RequestBody LotteryRound lotteryRound) throws URISyntaxException {
         log.debug("REST request to update LotteryRound : {}", lotteryRound);
         if (lotteryRound.getId() == null) {
@@ -97,6 +100,7 @@ public class LotteryRoundResource {
      */
     @GetMapping("/lottery-rounds/{id}")
     @Timed
+    @Secured("ROLE_USER")
     public ResponseEntity<LotteryRound> getLotteryRound(@PathVariable Long id) {
         log.debug("REST request to get LotteryRound : {}", id);
         LotteryRound lotteryRound = lotteryRoundRepository.findOne(id);
@@ -111,6 +115,7 @@ public class LotteryRoundResource {
      */
     @DeleteMapping("/lottery-rounds/{id}")
     @Timed
+    @Secured("ROLE_USER")
     public ResponseEntity<Void> deleteLotteryRound(@PathVariable Long id) {
         log.debug("REST request to delete LotteryRound : {}", id);
         lotteryRoundRepository.delete(id);
