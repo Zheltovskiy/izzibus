@@ -1,0 +1,33 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "phoneNumber",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "minlength",
+                "maxlength"
+            ],
+            "fieldValidateRulesMinlength": "11",
+            "fieldValidateRulesMaxlength": "11"
+        },
+        {
+            "fieldName": "valid",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "ticket_id",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20170805072517",
+    "dto": "mapstruct",
+    "service": "no",
+    "entityTableName": "ticket",
+    "pagination": "no"
+}

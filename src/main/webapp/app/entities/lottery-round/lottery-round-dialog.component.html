@@ -1,0 +1,49 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myLotteryRoundLabel">Create or edit a Lottery Round</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!lotteryRound.id">
+            <label for="id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="lotteryRound.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_datetime">Datetime</label>
+            <div class="d-flex">
+                <input id="field_datetime" type="datetime-local" class="form-control" name="datetime" [(ngModel)]="lotteryRound.datetime"
+                required  />
+            </div>
+            <div [hidden]="!(editForm.controls.datetime?.dirty && editForm.controls.datetime?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.datetime?.errors?.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.datetime?.errors?.ZonedDateTimelocal">
+                    This field should be a date and time.
+                </small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="field_winner">Winner</label>
+            <select class="form-control" id="field_winner" name="winner" [(ngModel)]="lotteryRound.winner">
+                <option [ngValue]="null"></option>
+                <option [ngValue]="ticketOption.id === lotteryRound.winner?.id ? lotteryRound.winner : ticketOption" *ngFor="let ticketOption of winners; trackBy: trackTicketById">{{ticketOption.phoneNumber}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>

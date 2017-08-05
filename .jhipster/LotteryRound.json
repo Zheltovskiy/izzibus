@@ -1,0 +1,27 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "winner",
+            "otherEntityName": "ticket",
+            "relationshipType": "one-to-one",
+            "otherEntityField": "phoneNumber",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "winningRound"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "datetime",
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20170805072756",
+    "dto": "no",
+    "service": "no",
+    "entityTableName": "lottery_round",
+    "pagination": "no"
+}

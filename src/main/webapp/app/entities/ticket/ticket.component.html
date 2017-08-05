@@ -1,0 +1,60 @@
+<div>
+    <h2>
+        <span>Tickets</span>
+        <button class="btn btn-primary float-right create-ticket" [routerLink]="['/', { outlets: { popup: ['ticket-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span >
+            Create new Ticket
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="tickets">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span>ID</span></th>
+            <th><span>Phone Number</span></th>
+            <th><span>Valid</span></th>
+            <th><span>Ticket Id</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let ticket of tickets ;trackBy: trackId">
+                <td><a [routerLink]="['../ticket', ticket.id ]">{{ticket.id}}</a></td>
+                <td>{{ticket.phoneNumber}}</td>
+                <td>{{ticket.valid}}</td>
+                <td>{{ticket.ticket_id}}</td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../ticket', ticket.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="hidden-md-down">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'ticket/'+ ticket.id + '/edit'} }]"
+                                replaceUrl="true"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="hidden-md-down">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'ticket/'+ ticket.id + '/delete'} }]"
+                                replaceUrl="true"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="hidden-md-down">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
