@@ -1,5 +1,5 @@
 # ===================================================================
-# Spring Boot configuration for the "prod" profile.
+# Spring Boot configuration for the "dev" profile.
 #
 # This configuration overrides the application.yml file.
 #
@@ -14,35 +14,45 @@
 # ===================================================================
 
 spring:
+    profiles:
+        active: dev
+        include: swagger
     devtools:
         restart:
-            enabled: false
+            enabled: true
         livereload:
-            enabled: false
+            enabled: false # we use gulp + BrowserSync for livereload
+    jackson:
+        serialization.indent_output: true
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:postgresql://localhost:5432/izzibus
+        url: jdbc:h2:file:./target/h2db/db/izzibus;DB_CLOSE_DELAY=-1
         username: izzibus
         password:
+    h2:
+        console:
+            enabled: false
     jpa:
-        database-platform: io.github.jhipster.domain.util.FixedPostgreSQL82Dialect
-        database: POSTGRESQL
-        show-sql: false
+        database-platform: io.github.jhipster.domain.util.FixedH2Dialect
+        database: H2
+        show-sql: true
         properties:
             hibernate.id.new_generator_mappings: true
             hibernate.cache.use_second_level_cache: false
             hibernate.cache.use_query_cache: false
-            hibernate.generate_statistics: false
+            hibernate.generate_statistics: true
     mail:
         host: localhost
         port: 25
         username:
         password:
+    messages:
+        cache-seconds: 1
     thymeleaf:
-        cache: true
+        cache: false
 
 liquibase:
-    contexts: prod
+    contexts: dev
 
 # ===================================================================
 # To enable SSL, generate a certificate using:
@@ -54,7 +64,7 @@ liquibase:
 # Then, modify the server.ssl properties so your "server" configuration looks like:
 #
 # server:
-#    port: 443
+#    port: 8443
 #    ssl:
 #        key-store: keystore.p12
 #        key-store-password: <your-password>
@@ -62,11 +72,7 @@ liquibase:
 #        keyAlias: izzibus
 # ===================================================================
 server:
-    port: 8080
-    compression:
-        enabled: true
-        mime-types: text/html,text/xml,text/plain,text/css, application/javascript, application/json
-        min-response-size: 1024
+    port: 8889
 
 # ===================================================================
 # JHipster specific properties
@@ -77,26 +83,32 @@ server:
 jhipster:
     http:
         version: V_1_1 # To use HTTP/2 you will need SSL support (see above the "server.ssl" configuration)
-        cache: # Used by the CachingHttpHeadersFilter
-            timeToLiveInDays: 1461
+    # CORS is only enabled by default with the "dev" profile, so BrowserSync can access the API
+    cors:
+        allowed-origins: "*"
+        allowed-methods: GET, PUT, POST, DELETE, OPTIONS
+        allowed-headers: "*"
+        exposed-headers:
+        allow-credentials: true
+        max-age: 1800
     security:
         authentication:
             jwt:
-                secret: c983d4814a624c31ed77c463d3fa6e7f88df59d7
+                secret: my-secret-token-to-change-in-production
                 # Token is valid 24 hours
                 token-validity-in-seconds: 86400
                 token-validity-in-seconds-for-remember-me: 2592000
     mail: # specific JHipster mail property, for standard properties see MailProperties
         from: izzibus@localhost
-        base-url: http://my-server-url-to-change # Modify according to your server's URL
+        base-url: http://127.0.0.1:8080
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx.enabled: true
-        graphite:
+        graphite: # Use the "graphite" Maven profile to have the Graphite dependencies
             enabled: false
             host: localhost
             port: 2003
             prefix: izzibus
-        prometheus:
+        prometheus: # Use the "prometheus" Maven profile to have the Prometheus dependencies
             enabled: false
             endpoint: /prometheusMetrics
         logs: # Reports Dropwizard metrics in the logs

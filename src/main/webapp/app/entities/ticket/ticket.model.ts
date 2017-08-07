@@ -5,7 +5,7 @@ export class Ticket implements BaseEntity {
         public id?: number,
         public phoneNumber?: string,
         public valid?: boolean,
-        public ticket_id?: string,
+        public ticketId?: string,
     ) {
         this.valid = false;
     }
